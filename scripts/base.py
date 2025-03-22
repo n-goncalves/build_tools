@@ -528,7 +528,7 @@ def git_is_ssh():
   if (git_protocol == "ssh"):
     return True
   origin = git_get_origin()
-  if (git_protocol == "auto") and (origin.find(":ONLYOFFICE/") != -1):
+  if (git_protocol == "auto") and (re.search(r'^git@', origin) != None):
     return True
   return False
 
@@ -544,7 +544,7 @@ def git_update(repo, is_no_errors=False, is_current_dir=False, git_owner=""):
   owner = git_owner if git_owner else "ONLYOFFICE"
   url = "https://github.com/" + owner + "/" + repo + ".git"
   if git_is_ssh():
-    url = get_ssh_base_url() + repo + ".git"
+    url = "git@github.com:" + owner + "/" + repo + ".git"
   folder = get_script_dir() + "/../../" + repo
   if is_current_dir:
     folder = repo
